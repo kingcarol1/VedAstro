@@ -16,8 +16,9 @@ RUN dotnet restore "API/API.csproj"
 RUN dotnet restore "Library/Library.csproj"
 COPY . .
 WORKDIR "/src"
-RUN dotnet build "StaticTableGenerator/StaticTableGenerator.csproj" -c Release --verbosity normal
-# Build all .NET Core projects, skip .NET Framework ones
+# Build all .NET Core projects first (this will include all Calculate partial classes)
+RUN find . -name "*.csproj" -not -path "*/Demo/*" -not -path "*/Website/*" -exec dotnet build {} -c Release \; || true
+# Then build the solution (for any remaining dependencies)
 RUN dotnet build VedAstro.sln --configuration Release --verbosity normal || true
 WORKDIR "/src/API"  
 RUN dotnet build "API.csproj" -c Release -o /app/build --verbosity detailed
