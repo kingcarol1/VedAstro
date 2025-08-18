@@ -20,6 +20,7 @@ RUN dotnet restore "Library/Library.csproj"
 COPY . .
 
 WORKDIR "/src/API"
+RUN dotnet build "../Library/Library.csproj" -c Release
 RUN dotnet build "API.csproj" -c Release -o /app/build
 
 FROM build AS publish
