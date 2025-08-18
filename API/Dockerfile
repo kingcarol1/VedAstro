@@ -19,7 +19,7 @@ WORKDIR "/src"
 # Build all projects except StaticTableGenerator (it's for local dev only)
 RUN find . -name "*.csproj" -not -path "*/Demo/*" -not -path "*/Website/*" -not -path "*/StaticTableGenerator/*" -exec dotnet build {} -c Release \; || true
 WORKDIR "/src/API"  
-RUN dotnet build "API.csproj" -c Release -o /app/build --verbosity detailed
+RUN dotnet build "API.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "API/API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 FROM base AS final
