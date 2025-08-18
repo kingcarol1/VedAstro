@@ -16,7 +16,9 @@ RUN dotnet restore "API/API.csproj"
 RUN dotnet restore "Library/Library.csproj"
 COPY . .
 WORKDIR "/src"
-RUN dotnet build "VedAstro.sln" -c Release -o /app/build /p:BuildProjectReferences=true --verbosity normal
+RUN dotnet build "Library/Library.csproj" -c Release --verbosity detailed
+WORKDIR "/src/API"  
+RUN dotnet build "API.csproj" -c Release -o /app/build --verbosity detailed
 FROM build AS publish
 RUN dotnet publish "API/API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 FROM base AS final
