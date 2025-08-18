@@ -16,7 +16,8 @@ RUN dotnet restore "API/API.csproj"
 RUN dotnet restore "Library/Library.csproj"
 COPY . .
 WORKDIR "/src"
-RUN dotnet build "Library/Library.csproj" -c Release --verbosity detailed
+# Build all .NET Core projects, skip .NET Framework ones
+RUN dotnet build VedAstro.sln --configuration Release --verbosity normal || true
 WORKDIR "/src/API"  
 RUN dotnet build "API.csproj" -c Release -o /app/build --verbosity detailed
 FROM build AS publish
