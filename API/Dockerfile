@@ -16,6 +16,7 @@ RUN dotnet restore "API/API.csproj"
 RUN dotnet restore "Library/Library.csproj"
 COPY . .
 WORKDIR "/src"
+RUN dotnet build "StaticTableGenerator/StaticTableGenerator.csproj" -c Release --verbosity normal
 # Build all .NET Core projects, skip .NET Framework ones
 RUN dotnet build VedAstro.sln --configuration Release --verbosity normal || true
 WORKDIR "/src/API"  
